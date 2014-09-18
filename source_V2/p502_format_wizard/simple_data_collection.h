@@ -41,6 +41,7 @@ private:
     QVector<simple_data> transcripts; // all transcripts
     QMap<QString, uint> maptranscripts; // transcript name to its index in the vector
     QMap<QString, QString> lototr; //loci to transcripts, multimap
+    QSet<QString> seenLoci; // due to BED reading, one needs to keep the loci in mind
     QStringList structure; // like a file for the viewer
     uint three_prime;
     uint five_prime;

@@ -3,11 +3,17 @@ Rcount
 
 Rcount: simple and flexible RNA-Seq read counting
 
-This repository is under construction. It will host in a few days (today is the 18th of September 2014) the Rcount source code.
+This repository is under construction.
 
-To use Rcount, visit www.botinst.uzh.ch/research/development/grossnik/rcount.html, download the user guide, and follow the tutorial. 
+<a class="reference external" href="http://www.botinst.uzh.ch/static/rcount/Rcount_user_guide.pdf">Getting started with Rcount</a>
 
-In future, the binaries+user guide will be located in this repository. The link mentioned above will however still provide the data for the tutorial, the annotations, and the test results (which is too much to store here).
+<a class="reference external" href="http://www.botinst.uzh.ch/static/rcount/linux_64bit.zip">(Ubuntu-like) linux 64bit binaries</a>
+
+<a class="reference external" href="http://www.botinst.uzh.ch/static/rcount/windows_64bit.zip">Windows7 64bit binaries</a>
+
+<a class="reference external" href="http://www.botinst.uzh.ch/static/rcount/mac_64bit.zip">linux 64bit binaries</a>
+
+
 
 <a class="reference external" href="http://www.botinst.uzh.ch/static/rcount/rice_tutorial.zip">Data for the rice tutorial</a>
 

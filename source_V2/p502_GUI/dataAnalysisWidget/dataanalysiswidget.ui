@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>dataAnalysisWidget</class>
+ <widget class="QWidget" name="dataAnalysisWidget">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1069</width>
+    <height>623</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>dataAnalysisWidget</string>
+  </property>
+  <widget class="QGroupBox" name="resultsGroupBox">
+   <property name="geometry">
+    <rect>
+     <x>370</x>
+     <y>10</y>
+     <width>691</width>
+     <height>611</height>
+    </rect>
+   </property>
+   <property name="title">
+    <string>Results</string>
+   </property>
+   <layout class="QVBoxLayout" name="verticalLayout_3">
+    <item>
+     <widget class="QTableView" name="resultsTableView"/>
+    </item>
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout_3">
+      <item>
+       <widget class="QLineEdit" name="findFeatureLineEdit"/>
+      </item>
+      <item>
+       <widget class="QPushButton" name="findFeaturePushButton">
+        <property name="text">
+         <string>find</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QGroupBox" name="projectGroupBox">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>10</y>
+     <width>351</width>
+     <height>611</height>
+    </rect>
+   </property>
+   <property name="title">
+    <string>Projects</string>
+   </property>
+   <layout class="QGridLayout" name="gridLayout">
+    <item row="0" column="0">
+     <widget class="QTreeView" name="projectsTreeView"/>
+    </item>
+    <item row="1" column="0">
+     <layout class="QHBoxLayout" name="horizontalLayout">
+      <item>
+       <widget class="QPushButton" name="newProjectPushButton">
+        <property name="text">
+         <string>new</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="openProjectPushButton">
+        <property name="text">
+         <string>open</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="closeProjectPushButton">
+        <property name="text">
+         <string>close</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="runPushButton">
+        <property name="text">
+         <string>run</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+   </layout>
+  </widget>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <resources/>
+ <connections/>
+</ui>

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>projectTreeView</class>
+ <widget class="QWidget" name="projectTreeView">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>452</width>
+    <height>347</height>
+   </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="windowTitle">
+   <string>projectTreeView</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout_2">
+   <item row="0" column="0">
+    <widget class="QGroupBox" name="groupBox">
+     <property name="title">
+      <string>Projects</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout">
+      <item row="0" column="0">
+       <widget class="QTreeView" name="treeView"/>
+      </item>
+      <item row="1" column="0">
+       <layout class="QHBoxLayout" name="horizontalLayout">
+        <item>
+         <widget class="QPushButton" name="newPushButton">
+          <property name="text">
+           <string>new</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="openPushButton">
+          <property name="text">
+           <string>open</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="closePushButton">
+          <property name="text">
+           <string>close</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="runPushButton">
+          <property name="text">
+           <string>run</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="runAllPushButton">
+          <property name="text">
+           <string>run all</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <resources/>
+ <connections/>
+</ui>

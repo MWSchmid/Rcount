@@ -199,6 +199,11 @@ inline bool simple_data_collection::load_data_ensembl()
             // update the feature and add it
             feature.insert_data(anno.chrom, anno.strand, start, end, anno.source, anno.feature, anno.name, anno.parent, anno.score, anno.phase);
             feature.assembled_feature = feature.feature; // otherwise the loci always have 0 priority
+            if (loci.count() > 0) { //! THIS IS NECESSARY WITH THE BED FILE READING
+                if (loci.last().name == anno.name) {
+                    continue;
+                }
+            }
             loci.push_back(feature);
             if (!priorities.contains(anno.feature)) { priorities.insert(anno.feature, 1); }
         }
@@ -326,6 +331,11 @@ inline bool simple_data_collection::load_data_generic()
             // update the feature and add it
             feature.insert_data(anno.chrom, anno.strand, start, end, anno.source, anno.feature, anno.name, anno.parent, anno.score, anno.phase);
             feature.assembled_feature = feature.feature; // otherwise the loci always have 0 priority
+            if (loci.count() > 0) { //! THIS IS NECESSARY WITH THE BED FILE READING
+                if (loci.last().name == anno.name) {
+                    continue;
+                }
+            }
             loci.push_back(feature);
             if (!priorities.contains(anno.feature)) { priorities.insert(anno.feature, 1); }
         }

@@ -11,11 +11,11 @@ This repository is under construction. There will be a major update within the n
 
 <a class="reference external" href="http://www.botinst.uzh.ch/static/rcount/linux_64bit.zip">Linux (ubuntu-like)</a>
 
-<a class="reference external" href="http://www.botinst.uzh.ch/static/rcount/windows_64bit.zip">Windows7/a>
+<a class="reference external" href="http://www.botinst.uzh.ch/static/rcount/windows_64bit.zip">Windows7</a>
 
 <a class="reference external" href="http://www.botinst.uzh.ch/static/rcount/mac_64bit.zip">MacOSX</a>
 
-
+Additional data for the tutorial and reference annotations are available here:
 
 <a class="reference external" href="http://www.botinst.uzh.ch/static/rcount/rice_tutorial.zip">Data for the rice tutorial</a>
 

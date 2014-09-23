@@ -365,10 +365,17 @@ inline bool simple_data_collection::load_data_generic()
                 rightFlank = "any_flank";
             }
             // update the feature and add it
-            // a routine for protein checking (in TAIR they are kids of the transcripts - not really what I want)
-            if (loci.last().name != anno.parent) {
-                feature.insert_data(anno.chrom, anno.strand, start, end, anno.source, anno.feature, anno.name, loci.last().name, anno.score, anno.phase);
-                lototr.insertMulti(loci.last().name, anno.name);
+            //! a routine for protein checking (in TAIR, proteins are children of transcripts - not what we want for later on)
+            //! note that this only works as long as the file is sorted by gene start (i.e. if everything belonging to that gene comes directly afterwards).
+            //! In BED files you sometimes have another transcript of geneB in between several transcripts of geneA - be aware of that
+            if (anno.getFileType() == "GFF3") {
+                if (loci.last().name != anno.parent) {
+                    feature.insert_data(anno.chrom, anno.strand, start, end, anno.source, anno.feature, anno.name, loci.last().name, anno.score, anno.phase);
+                    lototr.insertMulti(loci.last().name, anno.name);
+                } else {
+                    feature.insert_data(anno.chrom, anno.strand, start, end, anno.source, anno.feature, anno.name, anno.parent, anno.score, anno.phase);
+                    lototr.insertMulti(anno.parent, anno.name);
+                }
             } else {
                 feature.insert_data(anno.chrom, anno.strand, start, end, anno.source, anno.feature, anno.name, anno.parent, anno.score, anno.phase);
                 lototr.insertMulti(anno.parent, anno.name);

@@ -51,6 +51,10 @@ inline bool annotationReader::readLine() {
     return(rval);
 }
 
+inline QString annotationReader::getFileType() {
+    return(filetype);
+}
+
 //! for BED reading (12 or 14 columns)
 inline bool annotationReader::readBedLine() {
     bool rval = false;

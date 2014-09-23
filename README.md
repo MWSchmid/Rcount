@@ -3,17 +3,15 @@ Rcount
 
 Rcount: simple and flexible RNA-Seq read counting
 
-This repository is under construction. There will be a major update within the next few days (today is the 18th of September).
-
-<a class="reference external" href="http://www.botinst.uzh.ch/static/rcount/Rcount_user_guide.pdf">Getting started with Rcount</a>
+<a class="reference external" href="https://github.com/MWSchmid/Rcount/blob/master/Rcount_user_guide.pdf">Getting started with Rcount</a>
 
 64 bit binaries are available here:
 
-<a class="reference external" href="http://www.botinst.uzh.ch/static/rcount/linux_64bit.zip">Linux (ubuntu-like)</a>
+<a class="reference external" href="https://github.com/MWSchmid/Rcount/blob/master/linux_64bit.zip">Linux (ubuntu-like)</a>
 
-<a class="reference external" href="http://www.botinst.uzh.ch/static/rcount/windows_64bit.zip">Windows7</a>
+<a class="reference external" href="https://github.com/MWSchmid/Rcount/blob/master/windows_64bit.zip">Windows7</a>
 
-<a class="reference external" href="http://www.botinst.uzh.ch/static/rcount/mac_64bit.zip">MacOSX</a>
+<a class="reference external" href="https://github.com/MWSchmid/Rcount/blob/master/mac_64bit.zip">MacOSX</a>
 
 Additional data for the tutorial and reference annotations are available here:
 

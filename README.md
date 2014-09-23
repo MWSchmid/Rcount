@@ -3,7 +3,7 @@ Rcount
 
 Rcount: simple and flexible RNA-Seq read counting
 
-<a class="reference external" href="https://github.com/MWSchmid/Rcount/blob/master/Rcount_user_guide.pdf">Getting started with Rcount</a>
+<a class="reference external" href="https://github.com/MWSchmid/Rcount/blob/master/Rcount_user_guide.pdf", download>Getting started with Rcount</a>
 
 64 bit binaries are available here:
 

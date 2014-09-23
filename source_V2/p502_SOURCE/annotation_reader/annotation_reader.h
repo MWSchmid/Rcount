@@ -82,6 +82,9 @@ public:
 
     // read a line and tell if success - as base class default, this is the gtf/gff style
     bool readLine();
+    
+    // get the file type
+    QString getFileType();
 };
 
 //! INCLUDE THE SOURCE CODE (INLINE FILE)

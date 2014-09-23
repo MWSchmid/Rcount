@@ -7,7 +7,8 @@ Rcount: simple and flexible RNA-Seq read counting
 
 64 bit binaries are available here (right-click and "Save Target/Link As..."):
 
-<a class="reference external" href="https://github.com/MWSchmid/Rcount/blob/master/linux_64bit.zip">Linux (ubuntu-like)</a> 
+<a class="reference external" href="https://github.com/MWSchmid/Rcount/blob/master/linux_64bit.zip">Linux (ubuntu-like)</a>
+
 <a class="reference external" href="https://github.com/MWSchmid/Rcount/blob/master/windows_64bit.zip">Windows7</a> 
 
 <a class="reference external" href="https://github.com/MWSchmid/Rcount/blob/master/mac_64bit.zip">MacOSX</a>

@@ -26,31 +26,41 @@ class consoleRunner : public QThread
 
 private:
     QStringList _projectFiles;
+    dataAnalysis analyzer;
 
 public:
-    consoleRunner(QString &projectFiles){ this->_projectFiles = projectFiles.split(","); }
-    //~consoleRunner(){}
-
-protected:
-    void run() {
-        // initialize the dataAnalysis class
-        dataAnalysis analyzer;
-
+    consoleRunner(QString &projectFiles){
+        this->_projectFiles = projectFiles.split(",");
         // set connections
         connect(&analyzer, SIGNAL(analysisStatus(QString)), this, SLOT(printStatus(QString)), Qt::DirectConnection);
         connect(&analyzer, SIGNAL(analysisProgress(int)), this, SLOT(printProgress(int)), Qt::DirectConnection);
         connect(&analyzer, SIGNAL(errorMessage(QString)), this, SLOT(printError(QString)), Qt::DirectConnection);
+        connect(&analyzer, SIGNAL(writerStatsObtained(QString)), this, SLOT(printStats(QString)), Qt::DirectConnection);
+    }
 
-        // add projects
+    //~consoleRunner(){}
+
+    void startAnalysis() {
         foreach (QString fileName, this->_projectFiles) {
             analyzer.addProject(fileName);
         }
-        
+    }
+
+protected:
+    void run() {
+        std::cerr << "running Rcount-distribute via the command line" << std::endl << std::flush;
+        analyzer.addProject("STOPTHREAD");
+        analyzer.wait();
+        std::cerr << "stopping Rcount-distribute" << std::endl << std::flush;
     }
 
 private slots:
-    void printStatus(QString status){  std::cerr << qPrintable(QTime::currentTime().toString()) << status.toStdString() << std::endl << std::flush; }
-    void printProgress(int progress) { std::cerr << qPrintable(QTime::currentTime().toString()) << progress << "%" << std::endl << std::flush; }
+    void printStats(QString stats){
+        stats = stats.replace("|", "\n");
+        std::cerr << qPrintable(QTime::currentTime().toString()) << " STATS " << std::endl << stats.toStdString() << std::endl << std::flush;
+    }
+    void printStatus(QString status){  std::cerr << qPrintable(QTime::currentTime().toString()) << " " << status.toStdString() << std::endl << std::flush; }
+    void printProgress(int progress) { std::cerr << qPrintable(QTime::currentTime().toString()) << " " << progress << "%" << std::endl << std::flush; }
     void printError(QString errorMessage) { std::cerr << "ERROR: " << errorMessage.toStdString() << std::endl << std::flush; }
 };
 

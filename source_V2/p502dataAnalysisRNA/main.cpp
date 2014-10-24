@@ -16,8 +16,8 @@ See <http://www.gnu.org/licenses/> for a a copy of the GNU General Public Licens
 
 #include <QtGui/QApplication>
 #include <QtCore/QCoreApplication>
-//#include <getopt.h>
 
+//#include <getopt.h>
 //#include "consoleRunner.h"
 
 #include "../p502_GUI/dataAnalysisViewWidget/dataanalysisview.h"
@@ -71,8 +71,9 @@ int main(int argc, char *argv[])
         QCoreApplication a(argc, argv);
         // initialize the runner (will do everything)
         consoleRunner runner(projectFiles);
+        QObject::connect(&runner, SIGNAL(finished()), &a, SLOT(quit()), Qt::DirectConnection);
+        runner.startAnalysis();
         runner.start();
-        runner.wait();
         return a.exec();
     }
     //! RUNNING IN GUI

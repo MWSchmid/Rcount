@@ -25,19 +25,23 @@ API - I'm planning to add more detailed description for using the source code di
 
 Include the following files:
 
+```c++
 #include "../p502_SOURCE/dataStructure/databaseitem.h"
 #include "../p502_SOURCE/dataStructure/database.h"
 #include "../p502_SOURCE/dataStructure/mappingtreeitem.h"
 #include "../bamHandler/bamhelpers.h"
+```
 
 then later on in the code - initialize and load the data base:
 
+```c++
 QString annofile = "/path/to/annotation.xml";
 QVector<QVariant> headers;
 headers << "Sname" << "Schrom" << "Sstrand" << "Ustart" << "Uend" << "Sfeature" << "SassembledFeature" << "Upriority";
 database anno(headers);
 anno.print_time("START");
 if ( anno.readData(annofile) ) { anno.print_time("annotation loaded"); }
+```
 
 finally, you can query intervals or positions - there are multiple functions - check them the database header file:
 

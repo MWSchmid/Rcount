@@ -51,6 +51,16 @@ for an example how to use it, check the function readMapper::run() in:
 
 "../p502_SOURCE/dataAnalysis/readmapper.cpp"
 
+here an example to map a simple position (chrom + pos):
+
+```c++
+QString chrom = "Chr1";
+uint pos = 11351183;
+QVector<databaseItem*> mapping = anno.bestRmapPosition(chrom, pos); // note that there are also functions which fill in pre-allocated vectors - if you like to avoid the return-by-value
+foreach (databaseItem* element, mapping) {
+  std::cerr << element->data(0).toString().toStdString() << std::endl << std::flush;
+}
+```
 (if you have specific questions, contact me)
 
 

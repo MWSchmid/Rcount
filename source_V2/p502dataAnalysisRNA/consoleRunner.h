@@ -45,6 +45,8 @@ protected:
         foreach (QString fileName, this->_projectFiles) {
             analyzer.addProject(fileName);
         }
+        
+        this->wait(10000);
     }
 
 private slots:

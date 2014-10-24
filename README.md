@@ -21,5 +21,36 @@ Additional data for the tutorial and reference annotations are available here:
 
 <a class="reference external" href="http://www.botinst.uzh.ch/static/rcount/test_data_results.zip">Test data results</a>
 
+API - I'm planning to add more detailed description for using the source code directly within your code. Here just a very quick example if you would like to use the data base with the annotation where you can query read mappings or positions:
+
+Include the following files:
+
+#include "../p502_SOURCE/dataStructure/databaseitem.h"
+#include "../p502_SOURCE/dataStructure/database.h"
+#include "../p502_SOURCE/dataStructure/mappingtreeitem.h"
+#include "../bamHandler/bamhelpers.h"
+
+then later on in the code - initialize and load the data base:
+
+QString annofile = "/path/to/annotation.xml";
+QVector<QVariant> headers;
+headers << "Sname" << "Schrom" << "Sstrand" << "Ustart" << "Uend" << "Sfeature" << "SassembledFeature" << "Upriority";
+database anno(headers);
+anno.print_time("START");
+if ( anno.readData(annofile) ) { anno.print_time("annotation loaded"); }
+
+finally, you can query intervals or positions - there are multiple functions - check them the database header file:
+
+"../p502_SOURCE/dataStructure/database.h"
+
+for an example how to use it, check the function readMapper::run() in:
+
+"../p502_SOURCE/dataAnalysis/readmapper.cpp"
+
+(if you have specific questions, contact me)
+
+
+
+
 
 

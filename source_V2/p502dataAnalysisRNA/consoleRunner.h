@@ -46,7 +46,6 @@ protected:
             analyzer.addProject(fileName);
         }
         
-        this->wait(10000);
     }
 
 private slots:

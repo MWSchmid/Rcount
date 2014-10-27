@@ -45,7 +45,7 @@ public:
     inline const int get_len() {return(chrom_len);}
 
     inline const quint64 load_cov(seqan::BamStream& reader, seqan::BamIndex<seqan::Bai>& baiIndex, bool only_unique = true) {
-        quint64 numProcessed;
+        quint64 numProcessed = 0;
         uint numal = 0; // number of alignments for a given read
         // ungapped OR gapped read
         int start; // start OR the start of the current cigar operation

@@ -42,7 +42,7 @@ Example:
 
 2) For Rcount-distribute, type:
 
-./Rcount-distribute_CLV -c <list of comma-separated project files>
+./Rcount-distribute_CLV -c [list of comma-separated project files]
 
 Examples:
 ./Rcount-distribute_CLV -c myFirstProject.xml

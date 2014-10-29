@@ -17,6 +17,9 @@ See <http://www.gnu.org/licenses/> for a a copy of the GNU General Public Licens
 #include <QtGui/QApplication>
 #include "processmultireads.h"
 
+//#include <getopt.h>
+//#include "consoleRunner.h"
+
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
@@ -25,3 +28,65 @@ int main(int argc, char *argv[])
     
     return a.exec();
 }
+
+/*
+void usage() {
+    std::cerr << std::endl << "Usage is ./programname [-c infile,outfile,doReweight,allocationDistace]" << std::endl <<
+                 "infile must be a sorted bam file, outfile is bam." << std::endl <<
+                 "doReweight should be either y or n" << std::endl <<
+                 "allocationDistance should be a number (e.g. 100)" << std::endl <<
+                 "-c <file> if given, the application runs on console, otherwise gui." << std::endl << std::flush;
+    exit(8);
+}
+
+int c;
+extern char *optarg;
+extern int optind, optopt, opterr;
+
+int main(int argc, char *argv[])
+{
+    // check command line
+    bool commandLine = false;
+    QString command = "";
+
+
+    while ((c = getopt(argc, argv, "c:")) != -1) {
+        switch(c) {
+        case 'c':
+            commandLine = true;
+            command = optarg;
+            break;
+        case ':':
+            std::cerr << "some stuff not specified" << std::endl << std::flush;
+            break;
+        case '?':
+            std::cerr << "unknown argument" << std::endl << std::flush;
+            usage();
+        }
+    }
+
+    //! RUNNING ON COMMANDLINE
+    if (commandLine)
+    {
+        QCoreApplication a(argc, argv);
+        // initialize the runner (will do everything)
+        consoleRunner runner(command);
+        QObject::connect(&runner, SIGNAL(finished()), &a, SLOT(quit()), Qt::DirectConnection);
+        runner.startAnalysis();
+        runner.start();
+        return a.exec();
+    }
+    //! RUNNING IN GUI
+    else
+    {
+        QApplication a(argc, argv);
+        // initialize the GUI
+        processMultireads w;
+        // show the gui
+        w.show();
+        return a.exec();
+    }
+
+
+}
+*/

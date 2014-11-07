@@ -21,6 +21,8 @@ Additional data for the tutorial and reference annotations are available here:
 
 <a class="reference external" href="http://www.botinst.uzh.ch/static/rcount/test_data_results.zip">Test data results</a>
 
+NOTE: On linux, GLIBC needs to be at least version 2.14. Biolinux6 has a lower version.
+
 # Command-line version
 
 There is now a command-line version for Rcount-multireads and Rcount-distribute (only for 64 bit Ubuntu-like Linux). Important: it is not extensively tested yet. 

@@ -3,23 +3,23 @@ Rcount
 
 Rcount: simple and flexible RNA-Seq read counting
 
-<a class="reference external" href="https://github.com/MWSchmid/Rcount/blob/master/Rcount_user_guide.pdf?raw=true">Getting started with Rcount</a>
+[Getting started with Rcount](https://github.com/MWSchmid/Rcount/blob/master/other/Rcount_user_guide.pdf?raw=true)
 
 64 bit binaries are available here:
 
-<a class="reference external" href="https://github.com/MWSchmid/Rcount/blob/master/linux_64bit.zip?raw=true">Linux (ubuntu-like)</a>
+[Linux (ubuntu-like)](https://github.com/MWSchmid/Rcount/blob/master/other/linux_64bit.zip?raw=true)
 
-<a class="reference external" href="https://github.com/MWSchmid/Rcount/blob/master/windows_64bit.zip?raw=true">Windows7</a>
+[Windows7](https://github.com/MWSchmid/Rcount/blob/master/other/windows_64bit.zip?raw=true)
 
-<a class="reference external" href="https://github.com/MWSchmid/Rcount/blob/master/mac_64bit.zip?raw=true">MacOSX</a>
+[MacOSX](https://github.com/MWSchmid/Rcount/blob/master/other/mac_64bit.zip?raw=true)
 
 Additional data for the tutorial and reference annotations are available here:
 
-<a class="reference external" href="http://www.botinst.uzh.ch/static/rcount/rice_tutorial.zip">Data for the rice tutorial</a>
+[Data for the rice tutorial](http://www.botinst.uzh.ch/static/rcount/rice_tutorial.zip)
 
-<a class="reference external" href="http://www.botinst.uzh.ch/static/rcount/test_data_annotations.zip">Test data annotations</a>
+[Test data annotations](http://www.botinst.uzh.ch/static/rcount/test_data_annotations.zip)
 
-<a class="reference external" href="http://www.botinst.uzh.ch/static/rcount/test_data_results.zip">Test data results</a>
+[Test data results](http://www.botinst.uzh.ch/static/rcount/test_data_results.zip)
 
 NOTE: On linux, GLIBC needs to be at least version 2.14. Biolinux6 has a lower version.
 
@@ -27,7 +27,7 @@ NOTE: On linux, GLIBC needs to be at least version 2.14. Biolinux6 has a lower v
 
 There is now a command-line version for Rcount-multireads and Rcount-distribute (only for 64 bit Ubuntu-like Linux). Important: it is not extensively tested yet. 
 
-<a class="reference external" href="https://github.com/MWSchmid/Rcount/blob/master/Rcount_CLV.zip?raw=true">command-line version</a>
+[command-line version](https://github.com/MWSchmid/Rcount/blob/master/other/Rcount_CLV.zip?raw=true)
 
 Usage notes:
 

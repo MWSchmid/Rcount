@@ -144,7 +144,7 @@ inline bool annotationReader::readBedLine() {
 }
 
 //! for GTF reading
-inline bool annotationReader::getGtfAttributes(QString& str)
+inline bool annotationReader::getGtfAttributesREGEXP(QString& str)
 {
     bool rval = false;
     Attr.clear(); //very important
@@ -154,7 +154,7 @@ inline bool annotationReader::getGtfAttributes(QString& str)
     int pos = 0;
     while ((pos = rx.indexIn(str, pos)) != -1) {
         if ((counter % 2) != 0) { key = rx.cap(1); }
-        else { Attr.insert(key, rx.cap(1)); }
+        else {Attr.insert(key, rx.cap(1));}
         pos += rx.matchedLength();
         ++counter;
     }
@@ -175,6 +175,53 @@ inline bool annotationReader::getGtfAttributes(QString& str)
     } else {
         name = "none";
         parent = "none";
+    }
+    return(rval);
+}
+
+inline bool annotationReader::getGtfAttributes(QString& str)
+{
+    bool rval = false;
+    Attr.clear(); //very important
+    QStringList pairs = str.split("; ", QString::SkipEmptyParts);
+    QString key = "";
+    QString val = "";
+    foreach (QString pair, pairs) {
+        QStringList keyval = pair.split(" \"", QString::SkipEmptyParts);
+        if (keyval.length() != 2) {
+            std::cerr << pair.toStdString() << std::endl << std::flush;
+            continue;
+        }
+        key = keyval.at(0).simplified();
+        val = keyval.at(1).simplified();
+        key.remove(" ");
+        val.remove(" ");
+        val.remove("\"");
+        //std::cerr << feature.toStdString() << "|\t|" << key.toStdString() << "|\t|" << val.toStdString() << "|" << std::endl << std::flush;
+        Attr.insert(key, val);
+    }
+    rval = !Attr.isEmpty();
+    if (Attr.contains("gene_id") && Attr.contains("transcript_id")) {
+        if (Attr["transcript_id"] != "none") {
+            if ((feature == "exon") || (feature == "CDS")) {
+                name = "none";
+                parent = Attr["transcript_id"];
+            } else {
+                name = Attr["transcript_id"];
+                parent = Attr["gene_id"];
+            }
+        } else {
+            name = Attr["gene_id"];
+            parent = "none";
+        }
+    } else {
+        if (Attr.contains("gene_id")) {
+            name = Attr["gene_id"];
+            parent = "none";
+        } else {
+            name = "none";
+            parent = "none";
+        }
     }
     return(rval);
 }

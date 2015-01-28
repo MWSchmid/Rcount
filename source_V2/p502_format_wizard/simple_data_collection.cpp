@@ -87,11 +87,13 @@ inline bool simple_data_collection::load_data_ensembl()
     QList<QString> geneTypes;
     QList<QString> transcriptTypes;
     QList<QString> exonTypes;
+    QList<QString> utrTypes;
     geneTypes << "protein_coding_locus"
               << "pseudogene_locus"
               << "long_noncoding_locus"
               << "short_noncoding_locus"
-              << "other_locus";
+              << "other_locus"
+              << "gene";
     transcriptTypes << "IG_C_gene"
                     << "IG_D_gene"
                     << "IG_gene"
@@ -161,8 +163,10 @@ inline bool simple_data_collection::load_data_ensembl()
                     << "transposable_element_gene"
                     << "retrotransposed"
                     << "TEC"
-                    << "CDSPROTEIN";
+                    << "CDSPROTEIN"
+                    << "transcript";
     exonTypes << "exon" << "CDS";
+    utrTypes << "UTR";
     simple_data feature; // the feature -> will be updated and pushed onto a vector (in STL, this is copying it)
 
     // the start and end value to add:
@@ -176,7 +180,10 @@ inline bool simple_data_collection::load_data_ensembl()
     if (useZeroBased) { offsetCorrection = 1; }
 
     //! loop through the file
+    //int counter = 0;
     while (anno.readLine()) {
+        //counter++;
+        //std::cerr << anno.name.toStdString() << "|\t|" << anno.parent.toStdString() << std::endl << std::flush;
         // check what kind of feature
         // a locustype ?
         correctedStart = (anno.start-offsetCorrection);
@@ -261,6 +268,11 @@ inline bool simple_data_collection::load_data_ensembl()
             transcripts[maptranscripts.value(anno.parent)].add_exon(correctedStart, correctedEnd, anno.feature);
             if (!priorities.contains(anno.feature)) { priorities.insert(anno.feature, 1); }//! important: at() returns a constant!
         }
+        // a UTR?
+        else if (utrTypes.contains(anno.feature)) {
+            transcripts[maptranscripts.value(anno.parent)].add_utr(correctedStart, correctedEnd, anno.feature);
+            if (!priorities.contains(anno.feature)) { priorities.insert(anno.feature, 1); }//! important: at() returns a constant!
+        }
         // skip all the other types
         else { continue; }
     }
@@ -272,6 +284,7 @@ inline bool simple_data_collection::load_data_ensembl()
     //! sort the locusvector - use first qSort on the start, then qStableSort on the chromosome
     qSort(loci.begin(), loci.end(), SortSimpleDataByStart); // in the reference they use the function call without any brackets
     qStableSort(loci.begin(), loci.end(), SortSimpleDataByChrom);
+
 
     //! load the structure
     rval = load_structure();
@@ -441,6 +454,12 @@ inline bool simple_data_collection::load_structure()
         if (!occurences.contains(curkey)) { occurences.insert(curkey, 0); }
         ++occurences[curkey];
         foreach (const QString &transcript, lototr.values(iter->name)) {
+            if ((iter->feature == "non-coding-gene") && (transcripts.at(maptranscripts.value(transcript)).feature == "mRNA")) {
+                std::cerr << "nonGT " << iter->name.toStdString() << " " << transcripts.at(maptranscripts.value(transcript)).name.toStdString() << std::endl << std::flush;
+            }
+            if ((iter->feature == "gene") && (transcripts.at(maptranscripts.value(transcript)).feature == "non-coding-RNA")) {
+                std::cerr << "GnonT " << iter->name.toStdString() << " " << transcripts.at(maptranscripts.value(transcript)).name.toStdString() << std::endl << std::flush;
+            }
             curkey = QObject::tr("%1|%2").arg(iter->feature, transcripts.at(maptranscripts.value(transcript)).feature);
             if (!occurences.contains(curkey)) { occurences.insert(curkey, 0); }
             ++occurences[curkey];

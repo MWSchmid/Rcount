@@ -36,6 +36,7 @@ private:
     bool readGtfLine();
     bool readGffLine();
     // get the attributes from a line (important for the GTFs), as base class this returns false (not used anywhere)
+    bool getGtfAttributesREGEXP(QString& str);
     bool getGtfAttributes(QString& str);
     bool getGffAttributes(QString& str);
 
@@ -82,7 +83,7 @@ public:
 
     // read a line and tell if success - as base class default, this is the gtf/gff style
     bool readLine();
-    
+
     // get the file type
     QString getFileType();
 };

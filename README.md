@@ -23,6 +23,14 @@ Additional data for the tutorial and reference annotations are available here:
 
 NOTE: On linux, GLIBC needs to be at least version 2.14. Biolinux6 has a lower version.
 
+RECENT UPDATE CONCERNING MACOSX BUILD INSTRUCTIONS (advanced users only):
+
+A.T. managed to simplify the build procedure on OSX to quite some extent. He will host code specifically adapted for this on his GitHub account:
+
+[MacOSX build from source, by A.T.](https://github.com/axtu/Rcount)
+
+We are working on the build instructions. Thanks a lot for your work A.
+
 # Command-line version
 
 There is now a command-line version for Rcount-multireads and Rcount-distribute (only for 64 bit Ubuntu-like Linux). Important: it is not extensively tested yet. 

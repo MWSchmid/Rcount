@@ -33,7 +33,7 @@ We are working on the build instructions. Thanks a lot for your work A.
 
 # Command-line version - Update 2016-03-25:
 
-I merged the command line version and the GUI version (on all platforms, it was a prerequisite of a [workflow](https://github.com/MWSchmid/RNAseq_protocol) I am working on at the moment).
+I merged the command line version and the GUI version (on all platforms, it was a prerequisite for a [workflow](https://github.com/MWSchmid/RNAseq_protocol) I am working on at the moment).
 
 Usage notes:
 

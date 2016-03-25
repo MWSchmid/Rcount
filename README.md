@@ -31,42 +31,39 @@ A.T. managed to simplify the build procedure on OSX to quite some extent. He wil
 
 We are working on the build instructions. Thanks a lot for your work A.
 
-# Command-line version
+# Command-line version - Update 25th of March 2016:
 
-There is now a command-line version for Rcount-multireads and Rcount-distribute (only for 64 bit Ubuntu-like Linux). Important: it is not extensively tested yet. 
-
-[command-line version](https://github.com/MWSchmid/Rcount/blob/master/other/Rcount_CLV.zip?raw=true)
+I merged the command line version and the GUI version (on all platforms). 
 
 Usage notes:
 
 1) For Rcount-multireads, type:
 
-./Rcount-multireads_CLV -c infile,outfile,doReweight,allocationDistance
+./Rcount-multireads -c infile,outfile,doReweight,allocationDistance
 - infile must be a sorted bam file, outfile is bam.
 - doReweight should be either y or n
 - allocationDistance should be a number (e.g. 100)
 
 Example:
 
-./Rcount-multireads_CLV -c mySample.bam,mySampleReweighted.bam,y,100
+./Rcount-multireads -c mySample.bam,mySampleReweighted.bam,y,100
 
 2) For Rcount-distribute, type:
 
-./Rcount-distribute_CLV -c [list of comma-separated project files]
+./Rcount-distribute -c [list of comma-separated project files]
 
 Examples:
 
-./Rcount-distribute_CLV -c myFirstProject.xml
+./Rcount-distribute -c myFirstProject.xml
 
-./Rcount-distribute_CLV -c myFirstProject.xml,mySecondProject.xml
+./Rcount-distribute -c myFirstProject.xml,mySecondProject.xml
 
 Note:
 the project files are the ones normally created by the GUI-version of Rcount ("create project"). I added a Python script which can be used to generate project files via the command-line.
 
-
 # API
 
-I'm planning to add more detailed description for using the source code directly within your code. Here just a very quick example if you would like to use the data base with the annotation where you can query read mappings or positions:
+Here just a brief example if you would like to use the data base with the annotation where you can query read mappings or positions:
 
 Include the following files:
 

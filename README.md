@@ -31,9 +31,9 @@ A.T. managed to simplify the build procedure on OSX to quite some extent. He wil
 
 We are working on the build instructions. Thanks a lot for your work A.
 
-# Command-line version - Update 25th of March 2016:
+# Command-line version - Update 2016-03-25:
 
-I merged the command line version and the GUI version (on all platforms). 
+I merged the command line version and the GUI version (on all platforms, it was a prerequisite of a [workflow](https://github.com/MWSchmid/RNAseq_protocol) I am working on at the moment).
 
 Usage notes:
 

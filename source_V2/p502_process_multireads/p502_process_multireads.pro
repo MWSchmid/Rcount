@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
+QT       += core gui widgets
 
 TARGET = Rcount-multireads
 TEMPLATE = app
@@ -21,7 +21,13 @@ HEADERS  += processmultireads.h \
             multireadsprocessor.h \
             analysisprogressview.h \
             processmultireadsview.h \
-            printTimeAndMem.h # to turn this on, uncomment the lines in analysisprogressview.cpp. WORKS ONLY ON LINUX - IT READS THE MEM-INFO FROM /proc/...
+            printTimeAndMem.h \ # to turn this on, uncomment the lines in analysisprogressview.cpp. WORKS ONLY ON LINUX - IT READS THE MEM-INFO FROM /proc/...
+    consoleRunner.h
 
 FORMS    += analysisprogressview.ui \
             processmultireadsview.ui
+
+INCLUDEPATH+= ../zlib-1.2.8 \
+              ../
+
+LIBS += -lz

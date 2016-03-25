@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui xml
+QT       += core gui xml widgets
 
 TARGET = Rcount-distribute
 TEMPLATE = app
@@ -58,6 +58,11 @@ FORMS += ../p502_GUI/projectTreeViewWidget/projecttreeview.ui \
     ../p502_GUI/createProjectWidget/createprojectwidget.ui \
     ../p502_GUI/resultTableViewWidget/resulttableview.ui \
     ../p502_GUI/analysisProgressWidget/analysisprogressview.ui \
+
+INCLUDEPATH+= ../zlib-1.2.8 \
+              ../
+
+LIBS += -lz
 
 #RESOURCES += p502iconResources.qrc
 

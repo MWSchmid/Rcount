@@ -265,8 +265,8 @@ public:
       */
 
     //! not strand or strand specific
-    void alignmentMapFragment(QtBamAlignment &al, const bool& stranded) const;
-    void alignmentMapFragmentGapped(QtBamAlignment &al, const bool& stranded) const;
+    void alignmentMapFragment(QtBamAlignment &al, const bool& stranded, const bool& antisense) const;
+    void alignmentMapFragmentGapped(QtBamAlignment &al, const bool& stranded, const bool& antisense) const;
     //void alignmentMapPairedEnd(QtBamAlignment &alA, QtBamAlignment &alB, const bool& stranded) const;
     //void alignmentMapMatePair(QtBamAlignment &alA, QtBamAlignment &alB, const bool& stranded) const;
 

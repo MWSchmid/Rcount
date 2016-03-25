@@ -14,12 +14,12 @@ GNU General Public License for more details.
 See <http://www.gnu.org/licenses/> for a a copy of the GNU General Public License.
 */
 
-#include <QtGui/QApplication>
+#include <QtWidgets/QApplication>
 #include "processmultireads.h"
 
-//#include <getopt.h>
-//#include "consoleRunner.h"
-
+#include <getopt.h>
+#include "consoleRunner.h"
+/*
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
@@ -28,8 +28,8 @@ int main(int argc, char *argv[])
     
     return a.exec();
 }
+*/
 
-/*
 void usage() {
     std::cerr << std::endl << "Usage is ./programname [-c infile,outfile,doReweight,allocationDistace]" << std::endl <<
                  "infile must be a sorted bam file, outfile is bam." << std::endl <<
@@ -45,6 +45,14 @@ extern int optind, optopt, opterr;
 
 int main(int argc, char *argv[])
 {
+    QString path = QString(argv[0]);
+    QString end = path.split("/").last();
+    path.remove(path.length() - end.length(), end.length());
+    QDir dir(path);
+    QApplication::addLibraryPath(dir.absolutePath());
+    //QStringList libPaths = QApplication::libraryPaths();
+    //std::cerr << libPaths.join("; ").toStdString() << std::endl << std::flush;
+
     // check command line
     bool commandLine = false;
     QString command = "";
@@ -89,4 +97,4 @@ int main(int argc, char *argv[])
 
 
 }
-*/
+

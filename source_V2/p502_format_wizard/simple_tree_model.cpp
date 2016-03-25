@@ -42,7 +42,7 @@
 ** changed at the 12th of August 2011 by Marc Schmid
 ****************************************************************************/
 
-#include <QtGui>
+#include <QtWidgets>
 
 #include "simple_tree_item.h"
 #include "simple_tree_model.h"

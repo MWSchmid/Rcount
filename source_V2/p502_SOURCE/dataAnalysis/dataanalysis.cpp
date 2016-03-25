@@ -14,7 +14,7 @@ GNU General Public License for more details.
 See <http://www.gnu.org/licenses/> for a a copy of the GNU General Public License.
 */
 
-#include <QtGui>
+#include <QtWidgets>
 #include <QtXml>
 #include <iostream>
 
@@ -54,6 +54,7 @@ dataAnalysis::dataAnalysis()
     //! parameters for mapping and counting
     this->_useMulti = true;
     this->_stranded = false;
+    this->_antisense = false;
     this->_minReads = 5;
     this->_maxDist = 250;
     this->_minBelowMaxDist = 1; // this is equal to disabled...
@@ -170,7 +171,10 @@ void dataAnalysis::readElement(QXmlStreamReader* reader)
             else if (reader->name() == "readsOutfile")      { this->_readsOutfile = reader->attributes().value("entry").toString();}
             else if (reader->name() == "countTableFile")    { this->_countTableFile = reader->attributes().value("entry").toString();}
             else if (reader->name() == "multi")             { this->_useMulti = (reader->attributes().value("entry").toString() == "true");}
-            else if (reader->name() == "stranded")          { this->_stranded = (reader->attributes().value("entry").toString() == "true");}
+            else if (reader->name() == "stranded")          {
+                this->_stranded = (reader->attributes().value("entry").toString() != "false");
+                this->_antisense = (reader->attributes().value("entry").toString() == "antisense");
+            }
             else if (reader->name() == "minReads")          { this->_minReads = reader->attributes().value("entry").toString().toInt();}
             else if (reader->name() == "maxDist")           { this->_maxDist = reader->attributes().value("entry").toString().toInt();}
             else if (reader->name() == "minBelowMaxDist")   { this->_minBelowMaxDist = reader->attributes().value("entry").toString().toInt();}
@@ -299,7 +303,10 @@ bool dataAnalysis::writeProject(const QString &fileName)
             else { writer.writeAttribute("entry", QString("false")); }
             writer.writeEndElement();
             writer.writeStartElement("stranded");
-            if (this->_stranded) { writer.writeAttribute("entry", QString("true")); }
+            if (this->_stranded) {
+                if (this->_antisense) { writer.writeAttribute("entry", QString("antisense")); }
+                else { writer.writeAttribute("entry", QString("sense")); }
+            }
             else { writer.writeAttribute("entry", QString("false")); }
             writer.writeEndElement();
             writer.writeStartElement("minReads");
@@ -420,6 +427,7 @@ bool dataAnalysis::doAnalysis()
                       &this->_usedSpaceMAP,
                       this->_dataBase,
                       this->_stranded,
+                      this->_antisense,
                       this->_useMulti);
 
     // initialize the readcounter

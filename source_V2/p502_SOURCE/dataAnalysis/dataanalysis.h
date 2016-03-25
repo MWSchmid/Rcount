@@ -53,6 +53,7 @@ public:
     //! parameters for mapping and counting
     bool _useMulti;
     bool _stranded;
+    bool _antisense;
     int _minReads;
     int _maxDist;
     int _minBelowMaxDist;

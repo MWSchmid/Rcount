@@ -34,13 +34,14 @@ class readMapper: public QThread
 public:
     readMapper(const int *bufferSizeBAM, QList<QtBamAlignment> *bufferBAM, QWaitCondition *bufferIsNotFullBAM, QWaitCondition *bufferIsNotEmptyBAM, QMutex *mutexBAM, int *usedSpaceBAM,
                const int *bufferSizeMAP, QList<QtBamAlignment> *bufferMAP, QWaitCondition *bufferIsNotFullMAP, QWaitCondition *bufferIsNotEmptyMAP, QMutex *mutexMAP, int *usedSpaceMAP,
-               database *dataBase, bool &stranded, bool &multi);
+               database *dataBase, bool &stranded, bool &antisense, bool &multi);
     void run();
 private:
     //! a pointer to the dataBase that is used to map the reads
     database *_dataBase;
     //! mappingmode (stranded or not)
     bool _stranded;
+    bool _antisense; //if stranded test for opposite strands between gene and read
     bool _multi;
     //! variables related to the buffer with the alignments that are unmapped
     const int *_bufferSizeBAM;

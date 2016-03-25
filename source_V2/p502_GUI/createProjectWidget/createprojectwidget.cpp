@@ -14,7 +14,7 @@ GNU General Public License for more details.
 See <http://www.gnu.org/licenses/> for a a copy of the GNU General Public License.
 */
 
-#include <QtGui>
+#include <QtWidgets>
 #include <QtXml>
 
 #include <iostream>
@@ -158,6 +158,12 @@ bool createProjectWidget::getStranded()
     return(rval);
 }
 
+bool createProjectWidget::getAntisense()
+{
+    bool rval = ui->antisenseCheckBox->isChecked();
+    return(rval);
+}
+
 bool createProjectWidget::getMulti()
 {
     bool rval = ui->multiCheckBox->isChecked();
@@ -285,7 +291,10 @@ void createProjectWidget::saveProject()
                 else { writer.writeAttribute("entry", QString("false")); }
                 writer.writeEndElement();
                 writer.writeStartElement("stranded");
-                if (this->getStranded()) { writer.writeAttribute("entry", QString("true")); }
+                if (this->getStranded()) {
+                    if (this->getAntisense()) { writer.writeAttribute("entry", QString("antisense")); }
+                    else { writer.writeAttribute("entry", QString("sense")); }
+                }
                 else { writer.writeAttribute("entry", QString("false")); }
                 writer.writeEndElement();
                 writer.writeStartElement("minReads");

@@ -14,14 +14,15 @@ GNU General Public License for more details.
 See <http://www.gnu.org/licenses/> for a a copy of the GNU General Public License.
 */
 
-#include <QtGui/QApplication>
+#include <QtWidgets/QApplication>
 #include <QtCore/QCoreApplication>
 
-//#include <getopt.h>
-//#include "consoleRunner.h"
+#include <getopt.h>
+#include "consoleRunner.h"
 
 #include "../p502_GUI/dataAnalysisViewWidget/dataanalysisview.h"
 
+/*
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
@@ -31,8 +32,8 @@ int main(int argc, char *argv[])
     w.show();
     return a.exec();
 }
+*/
 
-/*
 void usage() {
     std::cerr << std::endl << "Usage is ./programname [-c projectFile (several files separated by comma)]" << std::endl <<
                  "-c <file> if given, the application runs on console, otherwise gui." << std::endl << std::flush;
@@ -45,6 +46,14 @@ extern int optind, optopt, opterr;
 
 int main(int argc, char *argv[])
 {
+    QString path = QString(argv[0]);
+    QString end = path.split("/").last();
+    path.remove(path.length() - end.length(), end.length());
+    QDir dir(path);
+    QApplication::addLibraryPath(dir.absolutePath());
+    //QStringList libPaths = QApplication::libraryPaths();
+    //std::cerr << libPaths.join("; ").toStdString() << std::endl << std::flush;
+
     // check command line
     bool commandLine = false;
     QString projectFiles = "";
@@ -89,4 +98,3 @@ int main(int argc, char *argv[])
 
 
 }
-*/

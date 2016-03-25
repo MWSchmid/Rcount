@@ -14,7 +14,7 @@ GNU General Public License for more details.
 See <http://www.gnu.org/licenses/> for a a copy of the GNU General Public License.
 */
 
-#include <QtGui>
+#include <QtWidgets>
 
 #include "processmultireadsview.h"
 #include "ui_processmultireadsview.h"

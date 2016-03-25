@@ -14,7 +14,7 @@ GNU General Public License for more details.
 See <http://www.gnu.org/licenses/> for a a copy of the GNU General Public License.
 */
 
-#include <QtGui>
+#include <QtWidgets>
 
 #ifndef SIMPLE_DATA_H
 #include "simple_data.h" //! do not include while compiling (as it is inline)!

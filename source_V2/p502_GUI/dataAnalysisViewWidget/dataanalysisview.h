@@ -17,7 +17,7 @@ See <http://www.gnu.org/licenses/> for a a copy of the GNU General Public Licens
 #ifndef DATAANALYSISVIEW_H
 #define DATAANALYSISVIEW_H
 
-#include <QtGui/QWidget>
+#include <QWidget>
 
 #include "../../p502_SOURCE/dataAnalysis/dataanalysis.h"
 

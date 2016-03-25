@@ -17,7 +17,7 @@ See <http://www.gnu.org/licenses/> for a a copy of the GNU General Public Licens
 #ifndef MULTIREADSPROCESSOR_H
 #define MULTIREADSPROCESSOR_H
 
-#include <QtGui>
+#include <QtWidgets>
 #include <QMap>
 #include "processMultiClasses.h"
 //#include "../seqan/stream.h"

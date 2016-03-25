@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
+QT       += core gui widgets
 
 TARGET = Rcount-format
 TEMPLATE = app
@@ -16,8 +16,6 @@ simple_data.cpp \
 simple_data_collection.cpp \
 formatwizard.cpp \
 main.cpp
-
-
 
 HEADERS  += simple_tree_item.h \
 simple_tree_model.h \

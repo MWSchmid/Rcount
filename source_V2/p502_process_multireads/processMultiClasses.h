@@ -36,7 +36,8 @@ private:
 
 public:
 
-    inline explicit chrom_coverage(const int& id, const int& len) : chrom_id(id), chrom_len(len) {chrom_cov.assign(len, 0);}
+    inline explicit chrom_coverage(const int& id, const int& len) : chrom_id(id), chrom_len(len) {chrom_cov.assign(len+1e4, 0);}
+    //! March 2016: Some aligners cause reads to extend over the reference - to solve this, I initiated slightly larger chromosomes (added 10 kb)
 
     // inline ~chrom_coverage() {}
 

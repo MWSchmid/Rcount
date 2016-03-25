@@ -14,7 +14,7 @@ GNU General Public License for more details.
 See <http://www.gnu.org/licenses/> for a a copy of the GNU General Public License.
 */
 
-#include <QtGui>
+#include <QtWidgets>
 #include <iostream>
 #include "databaseitem.h"
 #include "databasereader.h"
@@ -1012,7 +1012,7 @@ void database::bestNestedRmapGapStrand(const QString &chrom, const uint &start, 
   */
 
 //! not strand or strand specific
-void database::alignmentMapFragment(QtBamAlignment &al, const bool& stranded) const
+void database::alignmentMapFragment(QtBamAlignment &al, const bool& stranded, const bool& antisense) const
 {
     //! this function assumes an xM read - or as well xMxDxM of xMxIxM (takes the end)
     // get the endposition
@@ -1022,8 +1022,13 @@ void database::alignmentMapFragment(QtBamAlignment &al, const bool& stranded) co
     if (stranded) {
         // get Strand NOTE that this would be faster via bool
         QString strand;
-        if (al.IsReverseStrand()) { strand = "-"; }
-        else { strand = "+"; }
+        if (antisense) {
+            if (al.IsReverseStrand()) { strand = "+"; }
+            else { strand = "-"; }
+        } else {
+            if (al.IsReverseStrand()) { strand = "-"; }
+            else { strand = "+"; }
+        }
         this->bestNestedRmapRangeStrand(al._refName, al._position, endPos, strand, al._mappings);
     } else {
         this->bestNestedRmapRange(al._refName, al._position, endPos, al._mappings);
@@ -1072,7 +1077,7 @@ void database::alignmentMapFragment(QtBamAlignment &al, const bool& stranded) co
     else { al.setIsAmbiguous(false); }
 }
 
-void database::alignmentMapFragmentGapped(QtBamAlignment &al, const bool& stranded) const
+void database::alignmentMapFragmentGapped(QtBamAlignment &al, const bool& stranded, const bool& antisense) const
 {
     //! this function assumes xMyNzM... reads
     // we first do the mapping as for ungapped reads. From start to end. This will normally give us loci, transcripts, and eventually exons
@@ -1085,8 +1090,13 @@ void database::alignmentMapFragmentGapped(QtBamAlignment &al, const bool& strand
     if (stranded) {
         // get Strand NOTE that this would be faster via bool
         QString strand;
-        if (al.IsReverseStrand()) { strand = "-"; }
-        else { strand = "+"; }
+        if (antisense) {
+            if (al.IsReverseStrand()) { strand = "+"; }
+            else { strand = "-"; }
+        } else {
+            if (al.IsReverseStrand()) { strand = "-"; }
+            else { strand = "+"; }
+        }
         this->bestNestedRmapRangeStrand(al._refName, al._position, endPos, strand, al._mappings);
     } else {
         this->bestNestedRmapRange(al._refName, al._position, endPos, al._mappings);
@@ -1125,7 +1135,9 @@ void database::alignmentMapFragmentGapped(QtBamAlignment &al, const bool& strand
                     else if ( (*cigarIter)._type == 'N' ) { isMatch = false; }
                     else if ( (*cigarIter)._type == 'D' ) { isMatch = true; } // a deletion in the reference is still kind of a match considering that the alignment positions are still according to the old reference
                     else if ( (*cigarIter)._type == 'I' ) { continue; } // an insert is not an intron - however - it should not extend the read (the alignment to the reference is actually shorter than the read length)
-                    else { std::cerr << "unknown cigar operation" << (*cigarIter)._type.toAscii() << std::endl << std::flush; continue; }
+                    else if ( (*cigarIter)._type == 'S' ) { continue; } // clipping should be ignored - and the read should not be extended (the alignment to the reference is actually shorter than the read length)
+                    else if ( (*cigarIter)._type == 'H' ) { continue; } // clipping should be ignored - and the read should not be extended (the alignment to the reference is actually shorter than the read length)
+                    else { std::cerr << "unknown cigar operation" << (*cigarIter)._type.toLatin1() << std::endl << std::flush; continue; }
                     // get the end of the current operation
                     ce = cs + (*cigarIter)._length - 1; // minus one because start and end are both included in the database; here, the start is within, but adding the length, the end should not be included
                     //! map the fragment - NOTE THAT WE DONT CHECK STRAND ANYMORE

@@ -45,6 +45,7 @@ public:
     int getMaxDist();
     int getMinBelowMaxDist();
     bool getStranded();
+    bool getAntisense();
     bool getMulti();
     bool getRegion();
     QString getRegionStartName();

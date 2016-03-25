@@ -22,12 +22,13 @@ See <http://www.gnu.org/licenses/> for a a copy of the GNU General Public Licens
 
 readMapper::readMapper(const int *bufferSizeBAM, QList<QtBamAlignment> *bufferBAM, QWaitCondition *bufferIsNotFullBAM, QWaitCondition *bufferIsNotEmptyBAM, QMutex *mutexBAM, int *usedSpaceBAM,
                        const int *bufferSizeMAP, QList<QtBamAlignment> *bufferMAP, QWaitCondition *bufferIsNotFullMAP, QWaitCondition *bufferIsNotEmptyMAP, QMutex *mutexMAP, int *usedSpaceMAP,
-                       database *dataBase, bool &stranded, bool &multi)
+                       database *dataBase, bool &stranded, bool &antisense, bool &multi)
 {
     //! the pointer to the database
     this->_dataBase = dataBase;
     //! mappingmode
     this->_stranded = stranded;
+    this->_antisense = antisense;
     this->_multi = multi;
     //! variables related to alignments that are unmapped
     this->_bufferSizeBAM = bufferSizeBAM;
@@ -62,7 +63,7 @@ void readMapper::runCanceled()
     //! TODO - implement this in a correct way
 }
 
-//! this version worked in tha bamHandlerTest (note that I hat to put the wakeUpAll in the slot)
+//! this version worked in tha bamHandlerTest (note that I had to put the wakeUpAll in the slot)
 void readMapper::run()
 {
     QtBamAlignment curItem;
@@ -96,8 +97,8 @@ void readMapper::run()
                     curItem.setIsSkipped(true);
                 }
                 else {
-                    if (curItem.IsGapped()) { this->_dataBase->alignmentMapFragmentGapped(curItem, this->_stranded); }
-                    else { this->_dataBase->alignmentMapFragment(curItem, this->_stranded); }
+                    if (curItem.IsGapped()) { this->_dataBase->alignmentMapFragmentGapped(curItem, this->_stranded, this->_antisense); }
+                    else { this->_dataBase->alignmentMapFragment(curItem, this->_stranded, this->_antisense); }
                 }
             }
         } else {

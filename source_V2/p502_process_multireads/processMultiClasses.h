@@ -67,6 +67,7 @@ public:
             while (!atEnd(reader)) {
                 seqan::readRecord(record, reader);
                 if (seqan::hasFlagUnmapped(record)) { continue; }
+                if (seqan::hasFlagSecondary(record)) { continue; } //! bugfix at the 18th of April 2016
                 ++numProcessed;
                 if (record.rID == -1 || record.rID > chrom_id || record.beginPos > chrom_len) { break; }
                 seqan::BamTagsDict tags(record.tags);

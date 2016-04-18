@@ -99,6 +99,7 @@ quint64 multireadsProcessor::getNumberLines(QString fileName)
     while (!atEnd(reader)) {
         seqan::readRecord(record, reader);
         if (seqan::hasFlagUnmapped(record)) { continue; }
+        if (seqan::hasFlagSecondary(record)) { continue; } //! bugfix at the 18th of April 2016
         ++numLines;
         if (this->_isCancelled) { break; }
     }
@@ -197,6 +198,7 @@ bool multireadsProcessor::write_driver(QString& bamfile, multireadcollection& mu
     while (!atEnd(reader)) {
         seqan::readRecord(record, reader);
         if (seqan::hasFlagUnmapped(record)) { continue; }
+        if (seqan::hasFlagSecondary(record)) { continue; } //! bugfix at the 18th of April 2016
         ++numProcessed;
         if ((numProcessed % 1000000) == 0) {
             this->_progress = 80 + (numProcessed / static_cast<float>(numLines)) * 20; //! 80 from before plus 20

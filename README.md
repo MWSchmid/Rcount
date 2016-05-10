@@ -7,7 +7,7 @@ Rcount: simple and flexible RNA-Seq read counting
 
 64 bit binaries are available here:
 
-[Linux (ubuntu-like)](https://github.com/MWSchmid/Rcount/blob/master/other/linux_64bit.zip?raw=true)
+[Linux (ubuntu-like)](https://github.com/MWSchmid/Rcount/blob/master/other/linux_64bit.zip?raw=true); IMPORTANT: install the Qt5 libraries: `sudo apt-get install qt5-default`
 
 [Windows7](https://github.com/MWSchmid/Rcount/blob/master/other/windows_64bit.zip?raw=true)
 

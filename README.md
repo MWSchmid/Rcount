@@ -5,6 +5,8 @@ Rcount: simple and flexible RNA-Seq read counting
 
 [Getting started with Rcount](https://github.com/MWSchmid/Rcount/blob/master/other/Rcount_user_guide.pdf?raw=true)
 
+Note on the hierarchy and priority assignments: Rcount takes the feature information from the third column in the GFF/GTF. This is true for some DBs (e.g. TAIR), but others add this info as a separate field in the last column (entries in column 3 are then very simple, e.g. just gene, transcript, exon, UTR). GTFs from ensembl are an example for the latter case. To specify the priorities for the detailed feature types, the GTF needs to be reformatted. I may have a look into this once.
+
 64 bit binaries are available here:
 
 [Linux (ubuntu-like)](https://github.com/MWSchmid/Rcount/blob/master/other/linux_64bit.zip?raw=true); IMPORTANT: install the Qt5 libraries: `sudo apt-get install qt5-default`

@@ -13,6 +13,8 @@ Note on the hierarchy and priority assignments: Rcount takes the feature informa
 
 [Windows7](https://github.com/MWSchmid/Rcount/blob/master/other/windows_64bit.zip?raw=true)
 
+[Windows Server 2012 R2](https://github.com/MWSchmid/Rcount/blob/master/other/windows_server_64bit.zip?raw=true)
+
 [MacOSX](https://github.com/MWSchmid/Rcount/blob/master/other/mac_64bit.zip?raw=true)
 
 Additional data for the tutorial and reference annotations are available here:

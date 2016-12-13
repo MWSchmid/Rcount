@@ -1,7 +1,7 @@
 Rcount: simple and flexible RNA-Seq read counting
 ======
 
-[About Rcount](http://dx.doi.org/10.1093/bioinformatics/btu680)
+[About Rcount](http://bioinformatics.oxfordjournals.org/content/31/3/436)
 
 [Getting started with Rcount](https://github.com/MWSchmid/Rcount/blob/master/other/Rcount_user_guide.pdf?raw=true)
 

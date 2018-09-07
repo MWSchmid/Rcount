@@ -56,8 +56,17 @@ database::database(const QVector<QVariant> &headers, const uint &indexStepSize)
     this->MINDISTALLOCOL = headers.count();
     this->TOTCOL = headers.count();
     this->VALIDCOL = headers.count();
+    // optional sampleWiseColumns - just clear them
+    this->SAMPLEWISESUMUNAMBCOL.clear();       // Fsumunamb   COLUMN with sum of unambiguous hits - at any time
+    this->SAMPLEWISESUMAMBCOL.clear();         // Fsumamb     COLUMN with sum of ambiguous hits BEFORE allocation
+    this->SAMPLEWISESUMALLOCOL.clear();        // Fsumallo    COLUMN with sum of ambiguous hits AFTER allocation
+    this->SAMPLEWISEMINDISTUNAMBCOL.clear();   // Udistunamb  COLUMN with sum of unambiguous hits in the first minDist bases
+    this->SAMPLEWISEMINDISTAMBCOL.clear();     // Udistamb    COLUMN with sum of ambiguous hits BEFORE allocation in the first minDist bases
+    this->SAMPLEWISEMINDISTALLOCOL.clear();    // Udistallo   COLUMN with sum of ambiguous hits AFTER allocation in the first minDist bases
+    this->SAMPLEWISETOTCOL.clear();            // Ftothits    COLUMN with sum of all hits (unamb and allocated amb)
+    this->SAMPLEWISEVALIDCOL.clear();          // Uvalid      COLUMN with the info if the feature passed the last filter or not
 
-    // get the real column numbers
+    // get the real column numbers - no support for samplewise columns
     for (int i = 0; i < headers.count(); ++i) {
         //! compulsory columns
         if (headers.at(i).toString() == "Schrom") { this->CHROMCOL = i; }
@@ -184,6 +193,32 @@ bool database::writeCountTable(const QString &fileName)
         }
     }
 
+    return(rval);
+}
+
+// write a table with counts - sampleWise
+bool database::writeSampleWiseCountTables(const QString &fileName)
+{
+    bool rval = true;
+    QString sampleWiseFileName;
+    for (QHash<QString, uint>::iterator iter = this->SAMPLEWISETOTCOL.begin(); iter != this->SAMPLEWISETOTCOL.end(); ++iter) {
+        if (iter.key() == "NA") {
+            sampleWiseFileName = fileName;
+        } else {
+            sampleWiseFileName = fileName + "." + iter.key();
+        }
+        this->SUMUNAMBCOL = this->SAMPLEWISESUMUNAMBCOL.value(iter.key());
+        this->SUMAMBCOL = this->SAMPLEWISESUMAMBCOL.value(iter.key());
+        this->SUMALLOCOL = this->SAMPLEWISESUMALLOCOL.value(iter.key());
+        this->MINDISTUNAMBCOL = this->SAMPLEWISEMINDISTUNAMBCOL.value(iter.key());
+        this->MINDISTAMBCOL = this->SAMPLEWISEMINDISTAMBCOL.value(iter.key());
+        this->MINDISTALLOCOL = this->SAMPLEWISEMINDISTALLOCOL.value(iter.key());
+        this->TOTCOL = iter.value();
+        this->VALIDCOL = this->SAMPLEWISEVALIDCOL.value(iter.key());
+        if (rval) {
+            rval = this->writeCountTable(sampleWiseFileName);
+        }
+    }
     return(rval);
 }
 
@@ -390,6 +425,56 @@ bool database::checkColumns() const
     return(rval);
 }
 
+bool database::insertSampleWiseColumns(const QHash<QString, QHash<QString, temporaryResults> > &tempData)
+{
+    bool rval = true;
+    int pos = -1;
+
+    for (QHash<QString, QHash<QString, temporaryResults> >::const_iterator iter = tempData.begin(); iter != tempData.end(); ++iter) {
+        pos = this->rootItem->itemData.size();
+        rval = this->rootItem->insertColumns(pos, 1, true);
+        this->rootItem->itemData[pos] = "Fsumunamb_" + iter.key();
+        this->SAMPLEWISESUMUNAMBCOL[iter.key()] = pos;
+
+        pos = this->rootItem->itemData.size();
+        rval = this->rootItem->insertColumns(pos, 1, true);
+        this->rootItem->itemData[pos] = "Fsumamb_" + iter.key();
+        this->SAMPLEWISESUMAMBCOL[iter.key()] = pos;
+
+        pos = this->rootItem->itemData.size();
+        rval = this->rootItem->insertColumns(pos, 1, true);
+        this->rootItem->itemData[pos] = "Fsumallo_" + iter.key();
+        this->SAMPLEWISESUMALLOCOL[iter.key()] = pos;
+
+        pos = this->rootItem->itemData.size();
+        rval = this->rootItem->insertColumns(pos, 1, true);
+        this->rootItem->itemData[pos] = "Udistunamb_" + iter.key();
+        this->SAMPLEWISEMINDISTUNAMBCOL[iter.key()] = pos;
+
+        pos = this->rootItem->itemData.size();
+        rval = this->rootItem->insertColumns(pos, 1, true);
+        this->rootItem->itemData[pos] = "Udistamb_" + iter.key();
+        this->SAMPLEWISEMINDISTAMBCOL[iter.key()] = pos;
+
+        pos = this->rootItem->itemData.size();
+        rval = this->rootItem->insertColumns(pos, 1, true);
+        this->rootItem->itemData[pos] = "Udistallo_" + iter.key();
+        this->SAMPLEWISEMINDISTALLOCOL[iter.key()] = pos;
+
+        pos = this->rootItem->itemData.size();
+        rval = this->rootItem->insertColumns(pos, 1, true);
+        this->rootItem->itemData[pos] = "Ftothits_" + iter.key();
+        this->SAMPLEWISETOTCOL[iter.key()] = pos;
+
+        pos = this->rootItem->itemData.size();
+        rval = this->rootItem->insertColumns(pos, 1, true);
+        this->rootItem->itemData[pos] = "Uvalid_" + iter.key();
+        this->SAMPLEWISEVALIDCOL[iter.key()] = pos;
+
+    }
+    return(rval);
+}
+
 void database::updateDataElement(databaseItem* item, const QHash<QString, temporaryResults> &tempData, const int &minReads, const int &minBelowMaxDist)
 {
     // the name of the item
@@ -431,6 +516,27 @@ bool database::updateData(const QHash<QString, temporaryResults> &tempData, cons
         }
     }
 
+    return(rval);
+}
+
+bool database::updateDataSampleWise(const QHash<QString, QHash<QString, temporaryResults> > &tempData, const int &minReads, const int &minBelowMaxDist)
+{
+    // add first the columns
+    bool rval = this->insertSampleWiseColumns(tempData);
+
+    for (QHash<QString, QHash<QString, temporaryResults> >::const_iterator iter = tempData.begin(); iter != tempData.end(); ++iter) {
+        this->SUMUNAMBCOL = this->SAMPLEWISESUMUNAMBCOL.value(iter.key());
+        this->SUMAMBCOL = this->SAMPLEWISESUMAMBCOL.value(iter.key());
+        this->SUMALLOCOL = this->SAMPLEWISESUMALLOCOL.value(iter.key());
+        this->MINDISTUNAMBCOL = this->SAMPLEWISEMINDISTUNAMBCOL.value(iter.key());
+        this->MINDISTAMBCOL = this->SAMPLEWISEMINDISTAMBCOL.value(iter.key());
+        this->MINDISTALLOCOL = this->SAMPLEWISEMINDISTALLOCOL.value(iter.key());
+        this->TOTCOL = this->SAMPLEWISETOTCOL.value(iter.key());
+        this->VALIDCOL = this->SAMPLEWISEVALIDCOL.value(iter.key());
+        if (rval) {
+            rval = this->updateData(iter.value(), minReads, minBelowMaxDist);
+        }
+    }
     return(rval);
 }
 

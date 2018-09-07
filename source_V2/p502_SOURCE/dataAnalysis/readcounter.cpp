@@ -76,14 +76,20 @@ void readCounter::countFirstRound(QtBamAlignment &al, mappingTreeItem &item)
     int minDist = this->_dataBase->getThreePrimeDist(item._self, al._position, end);
     bool addToMinDist =  minDist < this->_maxDist;
 
+    // check if the sample and the itemName already exist in the tempData
+    if ( !this->_tempData.contains(al._sample) ) {
+        QHash<QString, temporaryResults> newHash;
+        this->_tempData.insert(al._sample, newHash);
+    }
+
     // add an empty entry if it does not exist yet
-    if ( !this->_tempData.contains(itemName) ) {
+    if ( !this->_tempData[al._sample].contains(itemName) ) {
         temporaryResults newEntry;
-        this->_tempData.insert(itemName, newEntry);
+        this->_tempData[al._sample].insert(itemName, newEntry);
     }
 
     // add the weight to the count and replace the mindist if necessary
-    this->_tempData[itemName].firstRound(al._weight, addToMinDist, al.IsAmbiguous());
+    this->_tempData[al._sample][itemName].firstRound(al._weight, addToMinDist, al.IsAmbiguous());
 
     // do the same for all children
     foreach (mappingTreeItem child, item._children) {
@@ -105,10 +111,10 @@ void readCounter::countSecondRound(QtBamAlignment &al, mappingTreeItem &item, fl
     // get the new weight
     float newWeight;
     if (alloSum == 0) { newWeight = (1.0 / numPassed)*al._weight; }
-    else { newWeight = (this->_tempData.value(itemName)._sumUnAmb / alloSum)*al._weight; }
+    else { newWeight = (this->_tempData[al._sample].value(itemName)._sumUnAmb / alloSum)*al._weight; }
 
     // add it and replace the mindist if necessary
-    this->_tempData[itemName].secondRound(newWeight, addToMinDist);
+    this->_tempData[al._sample][itemName].secondRound(newWeight, addToMinDist);
 
     // do the same for all children
     foreach (mappingTreeItem child, item._children) {
@@ -132,10 +138,10 @@ void readCounter::allocate()
         toAdd.clear();
         foreach (mappingTreeItem curLocusBranch, al._mappings) {
             curName = curLocusBranch._self->data(0).toString(); // 0 is by force the name column
-            if ( this->_tempData.contains(curName) ) {
+            if ( this->_tempData[al._sample].contains(curName) ) {
                 // check if it mapping is valid from the first round
-                if ( this->_tempData[curName].isValidFirstRound(this->_minReads, this->_minBelowMaxDist) ) {
-                    alloSum += this->_tempData.value(curName)._sumUnAmb;
+                if ( this->_tempData[al._sample][curName].isValidFirstRound(this->_minReads, this->_minBelowMaxDist) ) {
+                    alloSum += this->_tempData[al._sample].value(curName)._sumUnAmb;
                     toAdd.append(curLocusBranch);
                 }
             }
@@ -180,7 +186,6 @@ void readCounter::run() {
         this->_mutexMAP->unlock();
         // end control first buffer (MAP)
 
-
         // if a valid mapping, add the counts
         if ( !curItem.IsSkipped() ) {
             // iterate over the mappings and add/update
@@ -200,7 +205,7 @@ void readCounter::run() {
                     }
                 }
                 this->_ambAlignments.append(curItem);
-                //! REMOVE THE SEQUENCES TO SAVE MEMORY
+                //! REMOVE THE SEQUENCES TO SAVE MEMORY - already done while reading now
                 this->_ambAlignments.last()._name = "";
                 //this->_ambAlignments.last()._alignedBases = "";
                 this->_ambAlignments.last()._qualities = "";
@@ -221,12 +226,14 @@ void readCounter::run() {
 
     //! distribute ambiguous and add (first filtering is done here)
     if (!this->_isCanceled) {
+        std::cerr << "allocating" << std::endl << std::flush;
         this->allocate();
     }
 
     //! finally update the database (second filtering is done here) -> maybe one should call this outside of this class
     if (!this->_isCanceled) {
-        worked = this->_dataBase->updateData(this->_tempData, this->_minReads, this->_minBelowMaxDist);
+        std::cerr << "updating database" << std::endl << std::flush;
+        worked = this->_dataBase->updateDataSampleWise(this->_tempData, this->_minReads, this->_minBelowMaxDist);
     }
 
     // also the temporary data

@@ -88,7 +88,7 @@ void readMapper::run()
         // end control the first buffer (BAM)
 
         //! map the alignment if it was aligned
-        if (curItem.IsAligned()) {
+        if (curItem.IsAligned() && (!curItem.IsZeroWeight())) { //! SINGLE CELL NEW: SKIP ZERO WEIGHT ALIGNMENTS
             if ( (curItem._numal > 1) && !this->_multi ) {
                 curItem.setIsSkipped(true);
             } else {

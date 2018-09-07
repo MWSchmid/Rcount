@@ -55,6 +55,7 @@ public:
     //void writeCountElement(QTextStream &out, databaseItem *item); //not required now as we just report loci
 public:
     bool writeCountTable(const QString &fileName); // writes only the loci
+    bool writeSampleWiseCountTables(const QString &fileName); // writes only the loci, but samplewise and not just overall
 
 private:
     //! the rootItem of the database and the index
@@ -86,6 +87,15 @@ private:
     uint MINDISTALLOCOL;    // Udistallo   COLUMN with sum of ambiguous hits AFTER allocation in the first minDist bases
     uint TOTCOL;            // Ftothits    COLUMN with sum of all hits (unamb and allocated amb)
     uint VALIDCOL;          // Uvalid      COLUMN with the info if the feature passed the last filter or not
+    // other entries samplewise
+    QHash<QString, uint> SAMPLEWISESUMUNAMBCOL;       // Fsumunamb   COLUMN with sum of unambiguous hits - at any time
+    QHash<QString, uint> SAMPLEWISESUMAMBCOL;         // Fsumamb     COLUMN with sum of ambiguous hits BEFORE allocation
+    QHash<QString, uint> SAMPLEWISESUMALLOCOL;        // Fsumallo    COLUMN with sum of ambiguous hits AFTER allocation
+    QHash<QString, uint> SAMPLEWISEMINDISTUNAMBCOL;   // Udistunamb  COLUMN with sum of unambiguous hits in the first minDist bases
+    QHash<QString, uint> SAMPLEWISEMINDISTAMBCOL;     // Udistamb    COLUMN with sum of ambiguous hits BEFORE allocation in the first minDist bases
+    QHash<QString, uint> SAMPLEWISEMINDISTALLOCOL;    // Udistallo   COLUMN with sum of ambiguous hits AFTER allocation in the first minDist bases
+    QHash<QString, uint> SAMPLEWISETOTCOL;            // Ftothits    COLUMN with sum of all hits (unamb and allocated amb)
+    QHash<QString, uint> SAMPLEWISEVALIDCOL;          // Uvalid      COLUMN with the info if the feature passed the last filter or not
 
     //! for a fast lookup
     uint getOffset(const uint &position) const;
@@ -128,8 +138,11 @@ private:
     // this function is called to modify the data recursively -> would not be necessary with a name index
     void updateDataElement(databaseItem* item, const QHash<QString, temporaryResults> &tempData, const int &minReads, const int &minBelowMaxDist);
 public:
+    // insert the sampleWiseColumns
+    bool insertSampleWiseColumns(const QHash<QString, QHash<QString, temporaryResults> > &tempData);
     // this is the updater that can be called from outside
     bool updateData(const QHash<QString, temporaryResults> &tempData, const int &minReads, const int &minBelowMaxDist);
+    bool updateDataSampleWise(const QHash<QString, QHash<QString, temporaryResults> > &tempData, const int &minReads, const int &minBelowMaxDist);
 
 
 

@@ -136,7 +136,8 @@ QVector<QtCigarOp> bamHandler::getQtCigar(seqan::String<seqan::CigarElement<> >&
     out.reserve(5);
 
     for (int i = 0; i < seqan::length(seqanCigar); ++i) {
-        curCigar._type = QChar::fromAscii(seqanCigar[i].operation);
+        //curCigar._type = QChar::fromAscii(seqanCigar[i].operation);
+        curCigar._type = QChar::fromLatin1(seqanCigar[i].operation);
         curCigar._length = seqanCigar[i].count;
         out.push_back(curCigar);
     }
@@ -153,7 +154,8 @@ seqan::String<seqan::CigarElement<> > bamHandler::getSeqanCigar(QVector<QtCigarO
 
     QVector<QtCigarOp>::iterator cigarIter;
     for (cigarIter = QtCigar.begin(); cigarIter != QtCigar.end(); ++cigarIter) {
-        curOp = cigarIter->_type.toAscii();
+        //curOp = cigarIter->_type.toAscii();
+        curOp = cigarIter->_type.toLatin1();
         curCount = cigarIter->_length;
         seqan::appendValue(out, seqan::CigarElement<>(curOp, curCount));
     }
@@ -187,6 +189,7 @@ void bamHandler::readAlignments()
     QMap<int,QString> IDtoNAME;
     QMap<QString,int> NAMEtoID;
     uint tagID;
+    QString sampleName = "NA";
 
     // retrieve the reference IDtoNAME and NAMEtoID translators
     this->getIDtoNAME(reader, IDtoNAME);
@@ -225,6 +228,8 @@ void bamHandler::readAlignments()
                     QtAl._alignmentFlag = static_cast<uint>(record.flag);
                     QtAl._cigarData = this->getQtCigar(record.cigar);
                     QtAl._bin = record.bin;
+                    // extract or add sampleName
+                    QtAl.extractSampleNameOtherwiseAdd(sampleName);
                     // set all the mapFlag values possible
                     if (QtAl._numal > 1) { QtAl.setIsMulti(true); }
                     if (QtAl._cigarData.count() > 1) {
@@ -282,14 +287,18 @@ void bamHandler::readAlignments()
             // assign the rest
             QtAl._name = QString(seqan::toCString(record.qName));
             QtAl._length = static_cast<int>(seqan::getAlignmentLengthInRef(record));
-            QtAl._queryBases = QString(seqan::toCString(record.seq));
-            QtAl._qualities = QString(seqan::toCString(record.qual));
+            QtAl._queryBases = "*";//!QString(seqan::toCString(record.seq)); //! SAVE SOME MEMORY
+            QtAl._qualities = "*";//!QString(seqan::toCString(record.qual)); //! SAVE SOME MEMORY
             QtAl._refName = IDtoNAME.value(static_cast<int>(record.rID));
             QtAl._position = static_cast<int>(record.beginPos);
             QtAl._mapQuality = static_cast<uint>(record.mapQ);
             QtAl._alignmentFlag = static_cast<uint>(record.flag);
             QtAl._cigarData = this->getQtCigar(record.cigar);
             QtAl._bin = record.bin;
+            //std::cerr << QtAl._name.toStdString() << '\t' << QtAl._cigarData.at(0)._type.toLatin1() << '\t';
+            // extract or add sampleName
+            QtAl.extractSampleNameOtherwiseAdd(sampleName);
+            //std::cerr << QtAl._sample.toStdString() << std::endl << std::flush;
             // set all the mapFlag values possible
             if (QtAl._numal > 1) { QtAl.setIsMulti(true); }
             if (QtAl._cigarData.count() > 1) { // TAKE ONLY THE ONES WITH A N AS GAPPED READS
@@ -302,7 +311,7 @@ void bamHandler::readAlignments()
                     }
                 }
             }
-            if (QtAl._weight == 0) { QtAl.setIsZeroWeight(true); }
+            if (QtAl._weight == 0) { QtAl.setIsZeroWeight(true); } //! THAT's irrelevant now
             // add to the reader stats
             this->_readerStats.addAlignment(QtAl);
             // push to the buffer

@@ -37,7 +37,8 @@ private:
     //! a pointer to the dataBase that is used to map the reads
     database *_dataBase;
     //! storing temporary results
-    QHash<QString, temporaryResults> _tempData;
+    //QHash<QString, temporaryResults> _tempData;
+    QHash<QString, QHash<QString, temporaryResults> > _tempData;
     //! a list holding all ambiguous alignments
     QList<QtBamAlignment> _ambAlignments;
     //! variables related to filtering

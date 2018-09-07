@@ -80,6 +80,7 @@ public:
 class QtBamAlignment {
 public:
     //! member variables
+    QString _sample;        // Read names with a double underscore are interpreted as: SAMPLE__READNUMBER
     QString _name;          // Read name
     int _length;            // Query length
     QString _queryBases;    // 'Original' sequence (as reported from sequencing machine)
@@ -113,6 +114,21 @@ public:
 
     // get number of splices
     //int getNumSplice() { return(this->_cigarData.count()/2); } // integer division (i want to truncate/floor it) -is only true if only M/N operations
+
+    // add sample name from string
+    void addSampleName(QString &sampleName) { this->_sample = sampleName; }
+
+    // extract sample name from string
+    void extractSampleName() { this->_sample = this->_name.split("__").at(0); }
+
+    // extract sample name from string and if this doesn't work, add a sample name
+    void extractSampleNameOtherwiseAdd(QString &sampleName) {
+        if (this->_name.count("__") > 0) {
+            this->_sample = this->_name.split("__").at(0);
+        } else {
+            this->_sample = sampleName;
+        }
+    }
 
     // get the number of cigar operations or num gaps
     int getNumCop() { return(this->_cigarData.count()); }

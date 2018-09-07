@@ -67,7 +67,7 @@ dataAnalysis::dataAnalysis()
     //! database connection and settings
     //this->_dataBase
     this->_headers.clear();
-    this->_headers << "Sname" << "Schrom" << "Sstrand" << "Ustart" << "Uend" << "Sfeature" << "SassembledFeature" << "Upriority" << "Fsumunamb" << "Fsumamb" << "Fsumallo" << "Udistunamb" << "Udistamb" << "Udistallo" << "Ftothits" << "Uvalid";
+    this->_headers << "Sname" << "Schrom" << "Sstrand" << "Ustart" << "Uend" << "Sfeature" << "SassembledFeature" << "Upriority";// << "Fsumunamb" << "Fsumamb" << "Fsumallo" << "Udistunamb" << "Udistamb" << "Udistallo" << "Ftothits" << "Uvalid";
     this->_indexStepSize = 10000;
 
     //! buffer and coordination related things
@@ -512,7 +512,8 @@ bool dataAnalysis::doAnalysis()
 
     //! write the table with the counts
     if (this->_writeCounts) {
-        rval = this->_dataBase->writeCountTable(this->_countTableFile);
+        //rval = this->_dataBase->writeCountTable(this->_countTableFile);
+        rval = this->_dataBase->writeSampleWiseCountTables(this->_countTableFile);
         emit this->analysisCountsWritten(this->_countTableFile);
         this->_progress = 100;
         emit this->analysisStatus(QObject::tr("%1: finished").arg(this->_projectName));

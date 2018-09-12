@@ -512,7 +512,7 @@ bool dataAnalysis::doAnalysis()
 
     //! write the table with the counts
     if (this->_writeCounts) {
-        rval = this->_dataBase->writeCountTable(this->_countTableFile);
+        rval = this->_dataBase->writeCountTableWithTranscripts(this->_countTableFile);
         emit this->analysisCountsWritten(this->_countTableFile);
         this->_progress = 100;
         emit this->analysisStatus(QObject::tr("%1: finished").arg(this->_projectName));

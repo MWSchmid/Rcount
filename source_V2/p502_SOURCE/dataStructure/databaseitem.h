@@ -77,6 +77,9 @@ public:
     // get the level of the item
     int getLevel();
 
+    //! new in the countsPerTranscript version, access the name of the item
+    QString getName();
+
     //! modifier functions
 
     // change one data value

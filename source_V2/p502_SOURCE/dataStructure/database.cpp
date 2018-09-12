@@ -187,6 +187,71 @@ bool database::writeCountTable(const QString &fileName)
     return(rval);
 }
 
+// write a table with counts per gene AND per transcript
+bool database::writeCountTableWithTranscripts(const QString &fileName)
+{
+    // check if the necessary columns exist
+    bool rval = this->checkColumns();
+
+    // only then write it
+    if (rval) {
+        QFile file(fileName);
+        if (!file.open(QFile::WriteOnly | QFile::Text)) {
+            std::cerr << "Error: Cannot read file " << qPrintable(fileName)
+                      << ": " << qPrintable(file.errorString())
+                      << std::endl;
+            rval = false;
+        }
+        else {
+            QTextStream out(&file);
+            out.setCodec("UTF-8");
+
+            // File writing
+            foreach (databaseItem* curItem, this->rootItem->childItems) {
+                // skip the ones that are not valid
+                if (curItem->data(this->VALIDCOL).toUInt() == 0) { continue; } //! skip genes with zero counts
+                out <<
+                       curItem->data(this->NAMECOL).toString() << '\t' <<
+                       curItem->data(this->SUMUNAMBCOL).toFloat() << '\t' <<
+                       curItem->data(this->SUMAMBCOL).toFloat() << '\t' <<
+                       curItem->data(this->SUMALLOCOL).toFloat() << '\t' <<
+                       curItem->data(this->MINDISTUNAMBCOL).toUInt() << '\t' <<
+                       curItem->data(this->MINDISTAMBCOL).toUInt() << '\t' <<
+                       curItem->data(this->MINDISTALLOCOL).toUInt() << '\t' <<
+                       curItem->data(this->TOTCOL).toFloat() << '\t' <<
+                       curItem->data(this->VALIDCOL).toUInt() << '\n';
+                foreach (databaseItem* curTrans, curItem->childItems) {
+                    if (curTrans->data(this->VALIDCOL).toUInt() == 0) { continue; } //! skip transcripts with zero counts
+                    out <<
+                           curTrans->data(this->NAMECOL).toString() << '\t' <<
+                           curTrans->data(this->SUMUNAMBCOL).toFloat() << '\t' <<
+                           curTrans->data(this->SUMAMBCOL).toFloat() << '\t' <<
+                           curTrans->data(this->SUMALLOCOL).toFloat() << '\t' <<
+                           curTrans->data(this->MINDISTUNAMBCOL).toUInt() << '\t' <<
+                           curTrans->data(this->MINDISTAMBCOL).toUInt() << '\t' <<
+                           curTrans->data(this->MINDISTALLOCOL).toUInt() << '\t' <<
+                           curTrans->data(this->TOTCOL).toFloat() << '\t' <<
+                           curTrans->data(this->VALIDCOL).toUInt() << '\n';
+                }
+            }
+            out.flush();
+
+            // close the file and check if it worked
+            file.close();
+            if (file.error() != QFile::NoError) {
+                std::cerr << "Error: Cannot write file " << qPrintable(fileName)
+                          << ": " << qPrintable(file.errorString())
+                          << std::endl;
+                rval = false;
+            }
+            else { rval = true; }
+        }
+    }
+
+    return(rval);
+}
+
+
 /*!
   some old functions reimplemented X]
 */

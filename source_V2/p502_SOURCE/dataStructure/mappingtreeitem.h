@@ -18,8 +18,10 @@ See <http://www.gnu.org/licenses/> for a a copy of the GNU General Public Licens
 #define MAPPINGTREE_H
 
 #include <QList>
+#include <QStringList>
+#include <iostream>
 
-class databaseItem;
+#include "../dataStructure/databaseitem.h"
 
 //! well - its not the whole tree anymore, but an item of it
 
@@ -34,6 +36,18 @@ public:
     mappingTreeItem(databaseItem* self) {
         this->_self = self;
         this->_children.clear();
+    }
+
+    //! new in the countsPerTranscript version get gene and transcript names
+    QString getNames() {
+        QString out;
+        QStringList temp;
+        temp << this->_self->getName();
+        foreach (mappingTreeItem child, this->_children) {
+            temp << child._self->getName();
+        }
+        out = temp.join(",");
+        return(out);
     }
 
     //! HM - DOES A DEFAULT CONSTRUCTOR WORK?

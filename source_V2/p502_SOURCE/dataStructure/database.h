@@ -55,6 +55,7 @@ public:
     //void writeCountElement(QTextStream &out, databaseItem *item); //not required now as we just report loci
 public:
     bool writeCountTable(const QString &fileName); // writes only the loci
+    bool writeCountTableWithTranscripts(const QString &fileName); // writes loci and transcripts
 
 private:
     //! the rootItem of the database and the index

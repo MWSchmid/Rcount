@@ -19,6 +19,7 @@ See <http://www.gnu.org/licenses/> for a a copy of the GNU General Public Licens
 
 #include <QtCore>
 #include <QString>
+#include <QStringList>
 #include <iostream>
 
 #include "../dataStructure/mappingtreeitem.h"
@@ -126,6 +127,16 @@ public:
             out += cigarIter->_length;
         }
         return(out);
+    }
+
+    //! new in the countsPerTranscript version get gene and transcript names
+    void getGeneAndTranscriptNames(QString& XTtag) {
+        QStringList mappingGenesAndTranscripts;
+        foreach (mappingTreeItem gene, this->_mappings) {
+            mappingGenesAndTranscripts << gene.getNames();
+        }
+        XTtag.clear();
+        XTtag = mappingGenesAndTranscripts.join(";");
     }
 
     // alignment flag queries -> same as in bamtools (instead of Mapped I use Aligned)

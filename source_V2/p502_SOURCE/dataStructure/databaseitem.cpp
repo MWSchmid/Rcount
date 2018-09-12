@@ -96,8 +96,12 @@ int databaseItem::getLevel()
     else { return(3); }
 }
 
-
-
+//! new in the countsPerTranscript version, access the name of the item
+QString databaseItem::getName()
+{
+    QString out = this->data(0).toString();
+    return(out);
+}
 
 //! modifier functions
 

@@ -136,7 +136,7 @@ QVector<QtCigarOp> bamHandler::getQtCigar(seqan::String<seqan::CigarElement<> >&
     out.reserve(5);
 
     for (int i = 0; i < seqan::length(seqanCigar); ++i) {
-        curCigar._type = QChar::fromAscii(seqanCigar[i].operation);
+        curCigar._type = QChar::fromLatin1(seqanCigar[i].operation);
         curCigar._length = seqanCigar[i].count;
         out.push_back(curCigar);
     }
@@ -153,7 +153,7 @@ seqan::String<seqan::CigarElement<> > bamHandler::getSeqanCigar(QVector<QtCigarO
 
     QVector<QtCigarOp>::iterator cigarIter;
     for (cigarIter = QtCigar.begin(); cigarIter != QtCigar.end(); ++cigarIter) {
-        curOp = cigarIter->_type.toAscii();
+        curOp = cigarIter->_type.toLatin1();
         curCount = cigarIter->_length;
         seqan::appendValue(out, seqan::CigarElement<>(curOp, curCount));
     }
@@ -340,6 +340,9 @@ void bamHandler::writeAlignments()
     QtBamAlignment QtAl;
     QMap<QString,int> NAMEtoID;
     QMap<int,QString> IDtoNAME;
+    QString XTtag; //! new in the countsPerTranscript version: report the gene and transcript IDs for each read in the BAM file
+    //QByteArray XTtagByteArray; //! new in the countsPerTranscript version: report the gene and transcript IDs for each read in the BAM file
+    //const char *XTtagCstring; //! new in the countsPerTranscript version: report the gene and transcript IDs for each read in the BAM file
 
     // retrieve the reference IDtoNAME and NAMEtoID translators
     this->getIDtoNAME(reader, IDtoNAME);
@@ -372,7 +375,13 @@ void bamHandler::writeAlignments()
         record.cigar = this->getSeqanCigar(QtAl._cigarData);
         record.seq = QtAl._queryBases.toStdString();
         record.qual = QtAl._qualities.toStdString();
+        //! extract the gene and transcript names
+        XTtag.clear();
+        QtAl.getGeneAndTranscriptNames(XTtag);
+        //XTtagByteArray = XTtag.toLatin1();
+        //XTtagCstring = XTtagByteArray.data();
         // add tags and write the new alignment
+        std::cout << QtAl._name.toStdString() << '\t' << XTtag.toStdString() << std::endl << std::flush; //! the Z tag is not implemented -.-
         seqan::BamTagsDict tags(record.tags);
         if (QtAl.IsGapped()) {
             if (seqan::setTagValue(tags, "NH", static_cast<int>(QtAl._numal), 'i') && seqan::setTagValue(tags, "XW", QtAl._weight, 'f') && seqan::setTagValue(tags, "XM", static_cast<int>(QtAl._mapFlag), 'i') && seqan::setTagValue(tags, "XS", QtAl._spliceFlag, 'A')) {

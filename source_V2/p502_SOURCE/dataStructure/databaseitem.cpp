@@ -251,11 +251,21 @@ bool databaseItem::mapPosition(const uint &position, const uint &STARTCOL, const
     else { return(false); }
 }
 
-bool databaseItem::mapRange(const uint &start, const uint &end, const uint &STARTCOL, const uint &ENDCOL)
+bool databaseItem::mapRange(const uint &start, const uint &end, const uint &STARTCOL, const uint &ENDCOL) //added 30.nov.2018
+{
+    if ((this->itemData.value(STARTCOL).toUInt() <= start) && (this->itemData.value(ENDCOL).toUInt() >= start)) { return(true); }
+    if ((this->itemData.value(STARTCOL).toUInt() <= end) && (this->itemData.value(ENDCOL).toUInt() >= end)) { return(true); }
+    if ((this->itemData.value(STARTCOL).toUInt() <= start) && (this->itemData.value(ENDCOL).toUInt() >= end)) { return(true); } // added at the 16.jul.2019
+    if ((this->itemData.value(STARTCOL).toUInt() >= start) && (this->itemData.value(ENDCOL).toUInt() <= end)) { return(true); } // added at the 16.jul.2019
+    else { return(false); }
+}
+/*
+bool databaseItem::mapRange(const uint &start, const uint &end, const uint &STARTCOL, const uint &ENDCOL) // was previously the default
 {
     if ((this->itemData.value(STARTCOL).toUInt() <= start) && (this->itemData.value(ENDCOL).toUInt() >= end)) { return(true); }
     else { return(false); }
 }
+*/
 
 bool databaseItem::mapGap(const uint &start, const uint &end, const uint &STARTCOL, const uint &ENDCOL)
 {

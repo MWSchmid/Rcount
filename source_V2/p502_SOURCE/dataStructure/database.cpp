@@ -522,11 +522,16 @@ void database::LmapPosition(const QString &chrom, const uint &position, QVector<
 }
 
 void database::LmapRange(const QString &chrom, const uint &start, const uint &end, QVector<databaseItem*> &results) const
-{
-    QPair<QString,uint> offset = qMakePair(chrom, this->getOffset(start));
-    foreach (databaseItem* element, this->CPindex.value(offset)) {
-        if ( element->mapRange(start, end, this->STARTCOL, this->ENDCOL) ) {
-            results.append(element);
+{ //updated to search from start to end in May 2022
+    uint offsetStartNumber = this->getOffset(start);
+    uint offsetEndNumber = this->getOffset(end);
+    QPair<QString,uint> curOffset;
+    for (uint i = offsetStartNumber; i <= offsetEndNumber; ++i) {
+        curOffset = qMakePair(chrom, i);
+        foreach (databaseItem* element, this->CPindex.value(curOffset)) {
+            if ( element->mapRange(start, end, this->STARTCOL, this->ENDCOL) ) {
+                results.append(element);
+            }
         }
     }
 }
@@ -577,11 +582,16 @@ void database::LmapPositionStrand(const QString &chrom, const uint &position, co
 }
 
 void database::LmapRangeStrand(const QString &chrom, const uint &start, const uint &end, const QString &strand, QVector<databaseItem*> &results) const
-{
-    QPair<QString,uint> offset = qMakePair(chrom, this->getOffset(start));
-    foreach (databaseItem* element, this->CPindex.value(offset)) {
-        if ( element->mapRangeStrand(start, end, strand, this->STARTCOL, this->ENDCOL, this->STRANDCOL) ) {
-            results.append(element);
+{ //updated to search from start to end in May 2022
+    uint offsetStartNumber = this->getOffset(start);
+    uint offsetEndNumber = this->getOffset(end);
+    QPair<QString,uint> curOffset;
+    for (uint i = offsetStartNumber; i <= offsetEndNumber; ++i) {
+        curOffset = qMakePair(chrom, i);
+        foreach (databaseItem* element, this->CPindex.value(curOffset)) {
+            if ( element->mapRangeStrand(start, end, strand, this->STARTCOL, this->ENDCOL, this->STRANDCOL) ) {
+                results.append(element);
+            }
         }
     }
 }
@@ -735,15 +745,21 @@ void database::bestLmapPosition(const QString &chrom, const uint &position, QVec
 }
 
 void database::bestLmapRange(const QString &chrom, const uint &start, const uint &end, QVector<databaseItem*> &results) const
-{
-    QPair<QString,uint> offset = qMakePair(chrom, this->getOffset(start));
-    foreach (databaseItem* element, this->CPindex.value(offset)) {
-        if ( element->mapRange(start, end, this->STARTCOL, this->ENDCOL) ) {
-            if ( !results.isEmpty() ) {
-                if ( element->data(this->PRIORITYCOL).toUInt() > results.last()->data(this->PRIORITYCOL).toUInt() ) { continue; } // the previous one is better
-                if ( element->data(this->PRIORITYCOL).toUInt() < results.last()->data(this->PRIORITYCOL).toUInt() ) { results.clear(); }
+{ //updated to search from start to end in May 2022
+    uint offsetStartNumber = this->getOffset(start);
+    uint offsetEndNumber = this->getOffset(end);
+    QPair<QString,uint> curOffset;
+    for (uint i = offsetStartNumber; i <= offsetEndNumber; ++i) {
+        //std::cerr << "range:" << chrom.toStdString() << '\t' << start << '\t' << end << "\toffset:" << i << std::endl << std::flush;
+        curOffset = qMakePair(chrom, i);
+        foreach (databaseItem* element, this->CPindex.value(curOffset)) {
+            if ( element->mapRange(start, end, this->STARTCOL, this->ENDCOL) ) {
+                if ( !results.isEmpty() ) {
+                    if ( element->data(this->PRIORITYCOL).toUInt() > results.last()->data(this->PRIORITYCOL).toUInt() ) { continue; } // the previous one is better
+                    if ( element->data(this->PRIORITYCOL).toUInt() < results.last()->data(this->PRIORITYCOL).toUInt() ) { results.clear(); }
+                }
+            results.append(element); // append equal or better loci
             }
-        results.append(element); // append equal or better loci
         }
     }
 }
@@ -810,15 +826,20 @@ void database::bestLmapPositionStrand(const QString &chrom, const uint &position
 }
 
 void database::bestLmapRangeStrand(const QString &chrom, const uint &start, const uint &end, const QString &strand, QVector<databaseItem*> &results) const
-{
-    QPair<QString,uint> offset = qMakePair(chrom, this->getOffset(start));
-    foreach (databaseItem* element, this->CPindex.value(offset)) {
-        if ( element->mapRangeStrand(start, end, strand, this->STARTCOL, this->ENDCOL, this->STRANDCOL) ) {
-            if ( !results.isEmpty() ) {
-                if ( element->data(this->PRIORITYCOL).toUInt() > results.last()->data(this->PRIORITYCOL).toUInt() ) { continue; } // the previous one is better
-                if ( element->data(this->PRIORITYCOL).toUInt() < results.last()->data(this->PRIORITYCOL).toUInt() ) { results.clear(); }
+{ //updated to search from start to end in May 2022
+    uint offsetStartNumber = this->getOffset(start);
+    uint offsetEndNumber = this->getOffset(end);
+    QPair<QString,uint> curOffset;
+    for (uint i = offsetStartNumber; i <= offsetEndNumber; ++i) {
+        curOffset = qMakePair(chrom, i);
+        foreach (databaseItem* element, this->CPindex.value(curOffset)) {
+            if ( element->mapRangeStrand(start, end, strand, this->STARTCOL, this->ENDCOL, this->STRANDCOL) ) {
+                if ( !results.isEmpty() ) {
+                    if ( element->data(this->PRIORITYCOL).toUInt() > results.last()->data(this->PRIORITYCOL).toUInt() ) { continue; } // the previous one is better
+                    if ( element->data(this->PRIORITYCOL).toUInt() < results.last()->data(this->PRIORITYCOL).toUInt() ) { results.clear(); }
+                }
+                results.append(element); // append equal or better loci
             }
-        results.append(element); // append equal or better loci
         }
     }
 }
